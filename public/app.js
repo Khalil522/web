@@ -22,10 +22,6 @@ const getToken = () => localStorage.getItem('auth_token');
 const setToken = (t) => { if (t) localStorage.setItem('auth_token', t); };
 const clearToken = () => localStorage.removeItem('auth_token');
 
-const getToken = () => localStorage.getItem('auth_token');
-const setToken = (t) => { if (t) localStorage.setItem('auth_token', t); };
-const clearToken = () => localStorage.removeItem('auth_token');
-
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
