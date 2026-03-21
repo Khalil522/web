@@ -31,14 +31,16 @@ const safe = (u) => { const n=norm(u); const {password_hash,...s}=n; return s; }
 const banned = (u) => { if(!u||!u.banned_until) return false; if(u.banned_until==='forever') return true; return new Date(u.banned_until)>new Date(); };
 const isAdmin = (u) => Boolean(u&&(u.is_owner||u.is_admin));
 
-const toStorage = async (buf,name,folder) => {
-  const f = (folder||'media')+'/'+name;
-  const {error} = await supabase.storage.from('media').upload(f,buf,{upsert:true});
-  if(error) throw new Error(error.message);
-  const {data} = supabase.storage.from('media').getPublicUrl(f);
+const toStorage = async (buf, name, folder) => {
+  const f = (folder || 'media') + '/' + name;
+  const { error } = await supabase.storage.from('media').upload(f, buf, { 
+    upsert: true,
+    contentType: 'image/png' 
+  });
+  if (error) throw new Error(error.message);
+  const { data } = supabase.storage.from('media').getPublicUrl(f);
   return data.publicUrl;
 };
-
 const auth = async (req,res,next) => {
   const tok = req.headers['x-auth-token']||(req.headers['authorization']||'').replace('Bearer ','');
   if(!tok) return res.status(401).json({error:'Unauthorized'});
@@ -62,28 +64,38 @@ app.get('/api/auth/me',async(req,res)=>{
   res.json({user:safe(ses.users)});
 });
 
-app.post('/api/auth/register',async(req,res)=>{
-  const email=san(req.body.email,200).toLowerCase();
-  const password=String(req.body.password||'');
-  const displayName=san(req.body.displayName,80);
-  const remember=Boolean(req.body.remember);
-  if(!email||!email.includes('@')) return res.status(400).json({error:'Valid email required.'});
-  if(password.length<6) return res.status(400).json({error:'Password must be at least 6 characters.'});
-  if(!displayName) return res.status(400).json({error:'Display name is required.'});
-  const {data:ex}=await supabase.from('users').select('id').eq('email',email).single();
-  if(ex) return res.status(409).json({error:'Email already in use.'});
-  const {count}=await supabase.from('users').select('*',{count:'exact',head:true});
-  const ownerEmail=(process.env.OWNER_EMAIL||'').toLowerCase().trim();
-  const isOwner=ownerEmail?email===ownerEmail:count===0;
-  const hash=bcrypt.hashSync(password,10);
-  const {data:user,error}=await supabase.from('users').insert({email,password_hash:hash,display_name:displayName,is_owner:isOwner,is_admin:isOwner,created_at:now()}).select().single();
-  if(error) return res.status(500).json({error:error.message});
-  const tok=generateToken();
-  const exp=new Date(Date.now()+(remember?30:1)*24*60*60*1000).toISOString();
-  await supabase.from('auth_tokens').insert({token:tok,user_id:user.id,expires_at:exp});
-  res.json({user:safe(user),token:tok});
-});
+app.post('/api/auth/register', async (req, res) => {
+  const email = san(req.body.email, 200).toLowerCase().trim();
+  const password = String(req.body.password || '');
+  const displayName = san(req.body.displayName, 80);
+  const remember = Boolean(req.body.remember);
 
+  if (!email || !email.includes('@')) return res.status(400).json({ error: 'Valid email required.' });
+  
+  const { data: ex } = await supabase.from('users').select('id').eq('email', email).single();
+  if (ex) return res.status(409).json({ error: 'Email already in use.' });
+
+  // تحديد المالك بناءً على البريد الجديد
+  const ownerEmail = (process.env.OWNER_EMAIL || 'Louay@LTS.com').toLowerCase().trim();
+  const isOwner = email === ownerEmail;
+
+  const hash = bcrypt.hashSync(password, 10);
+  const { data: user, error } = await supabase.from('users').insert({
+    email, 
+    password_hash: hash, 
+    display_name: displayName, 
+    is_owner: isOwner, 
+    is_admin: isOwner, 
+    created_at: now()
+  }).select().single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  
+  const tok = generateToken();
+  const exp = new Date(Date.now() + (remember ? 30 : 1) * 24 * 60 * 60 * 1000).toISOString();
+  await supabase.from('auth_tokens').insert({ token: tok, user_id: user.id, expires_at: exp });
+  res.json({ user: safe(user), token: tok });
+});
 app.post('/api/auth/login',async(req,res)=>{
   const email=san(req.body.email,200).toLowerCase();
   const password=String(req.body.password||'');
@@ -364,6 +376,9 @@ app.post('/api/conversations/:id/seen',auth,async(req,res)=>{
   res.json({ok:true});
 });
 
-app.use((err,req,res,next)=>{if(!err)return next();res.status(400).json({error:err.message||'Error'});});
+app.use((err, req, res, next) => {
+  if (!err) return next();
+  res.status(400).json({ error: err.message || 'Error' });
+});
 
 module.exports = app;
