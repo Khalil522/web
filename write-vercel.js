@@ -1,0 +1,1 @@
+require('fs').writeFileSync('vercel.json', JSON.stringify({version:2,builds:[{src:'api/index.js',use:'@vercel/node'},{src:'public/**',use:'@vercel/static'}],routes:[{src:'/api/(.*)',dest:'/api/index.js'},{src:'/(.*)',dest:'/public/index.html'}]},null,2))
