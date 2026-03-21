@@ -1,4 +1,4 @@
-const state = {
+﻿const state = {
   user: null,
   lang: 'en',
   settings: {},
@@ -253,28 +253,35 @@ const showApp = () => {
 };
 
 const apiFetch = async (url, options = {}) => {
-  const _tok = getToken();
-  if (_tok) { options.headers = options.headers || {}; options.headers['x-auth-token'] = token; }
-  const token = getToken();
-  if (token) { options.headers = options.headers || {}; options.headers['x-auth-token'] = token; }
+  const _token = getToken();
+  if (_token) {
+    options.headers = options.headers || {};
+    options.headers['x-auth-token'] = _token;
+  }
+  
   const res = await fetch(url, options);
+  
   if (res.status === 401) {
     state.user = null;
     showAuth();
   }
+  
   const data = await res.json().catch(() => ({}));
+  
   if (res.status === 403 && data.error === 'Banned') {
     state.user = null;
     showAuth();
     toast(window.I18N[state.lang].labels.banned);
   }
+  
   if (data && data.token) setToken(data.token);
+  
   if (!res.ok) {
     throw new Error(data.error || 'Request failed');
   }
+  
   return data;
 };
-
 const refreshStats = () => {
   const memeCount = state.products.length;
   const postCount = state.posts.length;
