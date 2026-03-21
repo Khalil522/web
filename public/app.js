@@ -1,4 +1,4 @@
-﻿const state = {
+const state = {
   user: null,
   lang: 'en',
   settings: {},
@@ -272,6 +272,7 @@ const apiFetch = async (url, options = {}) => {
     showAuth();
     toast(window.I18N[state.lang].labels.banned);
   }
+  if (data && data.token) setToken(data.token);
   if (!res.ok) {
     throw new Error(data.error || 'Request failed');
   }
@@ -1194,11 +1195,13 @@ const setupNav = () => {
 
   $('#logoutBtn').addEventListener('click', async () => {
     await apiFetch('/api/auth/logout', { method: 'POST' });
+    clearToken();
     state.user = null;
     showAuth();
   });
   $('#logoutBtnMobile')?.addEventListener('click', async () => {
     await apiFetch('/api/auth/logout', { method: 'POST' });
+    clearToken();
     state.user = null;
     showAuth();
   });
@@ -1551,11 +1554,14 @@ const bootstrap = async () => {
   setupModals();
 
   try {
+    const _t = getToken();
+    if (!_t) { showAuth(); return; }
     const { user } = await apiFetch('/api/auth/me');
     if (user) {
       state.user = user;
       await onLogin();
     } else {
+      clearToken();
       showAuth();
     }
   } catch (err) {
