@@ -18,6 +18,10 @@
   activeSection: 'home'
 };
 
+const getToken = () => localStorage.getItem('auth_token');
+const setToken = (t) => { if (t) localStorage.setItem('auth_token', t); };
+const clearToken = () => localStorage.removeItem('auth_token');
+
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
@@ -249,6 +253,8 @@ const showApp = () => {
 };
 
 const apiFetch = async (url, options = {}) => {
+  const token = getToken();
+  if (token) { options.headers = options.headers || {}; options.headers['x-auth-token'] = token; }
   const res = await fetch(url, options);
   if (res.status === 401) {
     state.user = null;
