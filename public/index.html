@@ -1,0 +1,444 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My World</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="authModal" class="auth-modal">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="auth-title" data-i18n="auth.title">Welcome</div>
+          <div class="auth-sub" data-i18n="auth.subtitle">Enter my world</div>
+        </div>
+        <div class="auth-tabs">
+          <button class="tab active" data-tab="login" data-i18n="auth.loginTab">Login</button>
+          <button class="tab" data-tab="signup" data-i18n="auth.signupTab">Sign Up</button>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+          <label>
+            <span data-i18n="auth.email">Email</span>
+            <input type="email" name="email" required />
+          </label>
+          <label>
+            <span data-i18n="auth.password">Password</span>
+            <input type="password" name="password" required />
+          </label>
+          <label class="remember">
+            <input type="checkbox" name="remember" />
+            <span data-i18n="auth.remember">Remember me</span>
+          </label>
+          <button type="submit" class="primary" data-i18n="auth.loginButton">Log In</button>
+        </form>
+
+        <form id="signupForm" class="auth-form hidden">
+          <label>
+            <span data-i18n="auth.displayName">Display Name</span>
+            <input type="text" name="displayName" required />
+          </label>
+          <label>
+            <span data-i18n="auth.email">Email</span>
+            <input type="email" name="email" required />
+          </label>
+          <label>
+            <span data-i18n="auth.password">Password</span>
+            <input type="password" name="password" required />
+          </label>
+          <label class="remember">
+            <input type="checkbox" name="remember" />
+            <span data-i18n="auth.remember">Remember me</span>
+          </label>
+          <button type="submit" class="primary" data-i18n="auth.signupButton">Create Account</button>
+        </form>
+
+        <div class="auth-footer">
+          <button id="langToggle" class="ghost">AR / EN</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="side-brand">
+          <div class="brand-title">My World</div>
+          <div class="brand-sub" data-i18n="brand.tag">Memes + Moments</div>
+        </div>
+        <nav class="side-links" id="mainNav">
+          <button data-section="home" class="nav-link active">
+            <span class="material-symbols-rounded">home</span>
+            <span data-i18n="nav.home">Home</span>
+          </button>
+          <button data-section="feed" class="nav-link">
+            <span class="material-symbols-rounded">dynamic_feed</span>
+            <span data-i18n="nav.feed">Feed</span>
+          </button>
+          <button data-section="messages" class="nav-link">
+            <span class="material-symbols-rounded">chat_bubble</span>
+            <span data-i18n="nav.messages">Messages</span>
+          </button>
+          <button data-section="profile" class="nav-link">
+            <span class="material-symbols-rounded">account_circle</span>
+            <span data-i18n="nav.profile">Profile</span>
+          </button>
+          <button data-section="settings" class="nav-link">
+            <span class="material-symbols-rounded">settings</span>
+            <span data-i18n="nav.settings">Settings</span>
+          </button>
+          <button data-section="admin" class="nav-link hidden">
+            <span class="material-symbols-rounded">admin_panel_settings</span>
+            <span data-i18n="nav.admin">Admin</span>
+          </button>
+        </nav>
+        <div class="side-actions">
+          <button id="langToggleTop" class="ghost">AR / EN</button>
+          <button id="logoutBtn" class="danger" data-i18n="nav.logout">Logout</button>
+        </div>
+      </aside>
+
+      <div class="app-content">
+        <header class="topbar">
+          <div class="brand">
+            <span class="brand-title">My World</span>
+            <span class="brand-sub" data-i18n="brand.tag">Memes + Moments</span>
+          </div>
+          <div class="top-actions">
+            <button id="langToggleMobile" class="ghost">AR / EN</button>
+            <button id="logoutBtnMobile" class="danger" data-i18n="nav.logout">Logout</button>
+          </div>
+        </header>
+
+        <main class="main">
+          <section id="home" class="section active">
+            <div class="hero">
+              <div class="hero-copy">
+                <h1 id="heroTitle">This Is My World</h1>
+                <p id="heroSubtitle">Memes, moments, and the people I vibe with.</p>
+                <div class="hero-actions">
+                  <button class="primary" data-scroll="homeProducts" data-i18n="home.ctaMemes">See My Memes</button>
+                  <button class="ghost" data-section="messages" data-i18n="home.ctaChat">Message Me</button>
+                </div>
+              </div>
+              <div class="hero-card">
+                <div class="glass">
+                  <div class="glass-title" data-i18n="home.aboutTitle">About Me</div>
+                  <p id="aboutText">
+                    Welcome to my space on the internet. Here you can see my products, my posts, and message me directly.
+                  </p>
+                  <div class="stats">
+                    <div>
+                      <span class="stat-number" id="statMemes">0</span>
+                      <span class="stat-label" data-i18n="home.statMemes">Products</span>
+                    </div>
+                    <div>
+                      <span class="stat-number" id="statPosts">0</span>
+                      <span class="stat-label" data-i18n="home.statPosts">Posts</span>
+                    </div>
+                    <div>
+                      <span class="stat-number" id="statFriends">0</span>
+                      <span class="stat-label" data-i18n="home.statFriends">Friends</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="homeProducts" class="home-products">
+              <div class="section-header">
+                <h2 data-i18n="products.title">Louay Products</h2>
+                <p data-i18n="products.subtitle">Owner picks only.</p>
+              </div>
+              <div id="productsGrid" class="card-grid"></div>
+
+              <div id="productFormWrap" class="panel hidden">
+                <h3 data-i18n="products.addTitle">Add Product</h3>
+                <form id="productForm" class="stack">
+                  <input
+                    type="text"
+                    name="title"
+                    placeholder="Product title"
+                    data-i18n-placeholder="products.titlePlaceholder"
+                    required
+                  />
+                  <input type="text" name="price" placeholder="Price" data-i18n-placeholder="products.pricePlaceholder" />
+                  <input type="url" name="link" placeholder="Product link" data-i18n-placeholder="products.linkPlaceholder" />
+                  <textarea
+                    name="description"
+                    placeholder="Write a short description"
+                    data-i18n-placeholder="products.descPlaceholder"
+                  ></textarea>
+                  <div class="file-row">
+                    <input id="productImage" type="file" name="image" accept="image/*" />
+                    <label for="productImage" class="file-button" data-i18n="labels.addImage">Add Image</label>
+                    <span class="file-name" data-file-name="productImage"></span>
+                  </div>
+                  <button type="submit" class="primary" data-i18n="products.addButton">Add Product</button>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <section id="feed" class="section">
+            <div class="section-header">
+              <h2 data-i18n="feed.title">Feed</h2>
+              <p data-i18n="feed.subtitle">Drop a post. Share a vibe.</p>
+            </div>
+            <div id="postFormWrap" class="panel">
+              <form id="postForm" class="stack">
+                <textarea name="content" placeholder="Say something..." data-i18n-placeholder="feed.postPlaceholder"></textarea>
+                <div class="file-row">
+                  <input id="postMedia" type="file" name="media" />
+                  <label for="postMedia" class="file-button" data-i18n="labels.addMedia">Add Media</label>
+                  <span class="file-name" data-file-name="postMedia"></span>
+                </div>
+                <button type="submit" class="primary" data-i18n="feed.postButton">Post</button>
+              </form>
+            </div>
+            <div id="feedList" class="feed-list"></div>
+          </section>
+
+          <section id="messages" class="section">
+            <div class="section-header">
+              <h2 data-i18n="messages.title">Messages</h2>
+              <p data-i18n="messages.subtitle">Your crew, your conversations.</p>
+            </div>
+            <div class="messages-layout">
+              <div class="panel convo-list">
+                <div class="convo-header">
+                  <span data-i18n="messages.startChat">Start Chat</span>
+                  <input
+                    id="userSearch"
+                    type="search"
+                    placeholder="Search users"
+                    data-i18n-placeholder="messages.searchUsers"
+                  />
+                  <select id="userSelect"></select>
+                  <button id="startChatBtn" class="ghost" data-i18n="messages.startButton">Go</button>
+                </div>
+                <div class="group-create">
+                  <span class="group-title" data-i18n="messages.groupTitle">Create Group</span>
+                  <input
+                    id="groupName"
+                    type="text"
+                    placeholder="Group name"
+                    data-i18n-placeholder="messages.groupName"
+                  />
+                  <input
+                    id="groupSearch"
+                    type="search"
+                    placeholder="Search people"
+                    data-i18n-placeholder="messages.groupSearch"
+                  />
+                  <div id="groupUserList" class="group-user-list"></div>
+                  <button id="createGroupBtn" class="primary" data-i18n="messages.createGroup">
+                    Create Group
+                  </button>
+                </div>
+                <div id="convoList" class="convo-items"></div>
+              </div>
+              <div class="panel convo-chat">
+                <div class="chat-header">
+                  <img id="chatAvatar" class="message-avatar hidden" alt="avatar" />
+                  <div>
+                    <div id="convoHeader" class="convo-title" data-i18n="messages.noChat">Select a chat</div>
+                    <div id="convoStatus" class="muted"> </div>
+                  </div>
+                </div>
+                <div id="messageList" class="message-list"></div>
+                <form id="messageForm" class="message-form hidden">
+                  <input
+                    type="text"
+                    name="text"
+                    placeholder="Type a message"
+                    data-i18n-placeholder="messages.inputPlaceholder"
+                  />
+                  <div class="message-tools">
+                    <div class="file-row">
+                      <input id="messageMedia" type="file" name="media" />
+                      <label for="messageMedia" class="file-button" data-i18n="labels.addMedia">Add Media</label>
+                      <span class="file-name" data-file-name="messageMedia"></span>
+                    </div>
+                    <button type="button" id="recordBtn" class="ghost" data-i18n="messages.record">Record</button>
+                    <button type="submit" class="primary" data-i18n="messages.send">Send</button>
+                  </div>
+                  <audio id="voicePreview" class="voice-preview hidden" controls></audio>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <section id="profile" class="section">
+            <div class="section-header">
+              <h2 data-i18n="profile.title">Profile</h2>
+              <p data-i18n="profile.subtitle">Make it yours.</p>
+            </div>
+            <div class="profile-simple">
+              <div class="panel profile-card-simple" id="profileCard">
+                <img id="profileAvatar" class="profile-avatar" alt="avatar" />
+                <div class="profile-info">
+                  <h3 id="profileName">Profile</h3>
+                  <p id="profileBio" class="muted">Bio</p>
+                  <div class="profile-stats">
+                    <div>
+                      <span id="profileStatPosts">0</span>
+                      <span data-i18n="home.statPosts">Posts</span>
+                    </div>
+                    <div>
+                      <span id="profileStatProducts">0</span>
+                      <span data-i18n="home.statMemes">Products</span>
+                    </div>
+                    <div>
+                      <span id="profileStatFriends">0</span>
+                      <span data-i18n="home.statFriends">Friends</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <form id="profileForm" class="stack">
+                  <input
+                    type="text"
+                    name="displayName"
+                    placeholder="Display name"
+                    data-i18n-placeholder="profile.namePlaceholder"
+                  />
+                  <textarea name="bio" placeholder="Bio" data-i18n-placeholder="profile.bioPlaceholder"></textarea>
+                  <button type="submit" class="primary" data-i18n="profile.save">Save Profile</button>
+                </form>
+                <form id="avatarForm" class="stack">
+                  <label data-i18n="profile.avatar">Profile picture</label>
+                  <div class="file-row">
+                    <input id="avatarFile" type="file" name="avatar" accept="image/*" />
+                    <label for="avatarFile" class="file-button" data-i18n="labels.choosePhoto">Choose photo</label>
+                    <span class="file-name" data-file-name="avatarFile"></span>
+                  </div>
+                  <button type="submit" class="ghost" data-i18n="profile.upload">Upload Avatar</button>
+                </form>
+                <form id="profileBgForm" class="stack">
+                  <label data-i18n="profile.background">Profile background</label>
+                  <div class="file-row">
+                    <input id="profileBgFile" type="file" name="background" accept="image/*" />
+                    <label for="profileBgFile" class="file-button" data-i18n="labels.choosePhoto">Choose photo</label>
+                    <span class="file-name" data-file-name="profileBgFile"></span>
+                  </div>
+                  <button type="submit" class="ghost" data-i18n="profile.uploadBackground">Upload Background</button>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <section id="settings" class="section">
+            <div class="section-header">
+              <h2 data-i18n="settings.title">Settings</h2>
+              <p data-i18n="settings.subtitle">Customize your look.</p>
+            </div>
+            <div class="panel">
+              <form id="themeForm" class="stack">
+                <label class="color-row">
+                  <span data-i18n="settings.accent">Accent color</span>
+                  <input type="color" name="themeAccent" value="#7dd3fc" />
+                </label>
+                <label class="color-row">
+                  <span data-i18n="settings.surface">Surface color</span>
+                  <input type="color" name="themeSurface" value="#14181f" />
+                </label>
+                <label class="color-row">
+                  <span data-i18n="settings.background">Background color</span>
+                  <input type="color" name="themeBackground" value="#0b0f14" />
+                </label>
+                <label>
+                  <span data-i18n="settings.glass">Glass strength</span>
+                  <input type="range" name="glassOpacity" min="0.08" max="0.26" step="0.01" />
+                </label>
+                <label>
+                  <span data-i18n="settings.cardRadius">Card radius</span>
+                  <input type="range" name="cardRadius" min="10" max="28" step="1" />
+                </label>
+                <label>
+                  <span data-i18n="settings.pfpShape">Profile picture shape</span>
+                  <input type="range" name="pfpRadius" min="0" max="50" step="1" />
+                </label>
+                <button type="submit" class="primary" data-i18n="settings.save">Save Settings</button>
+              </form>
+            </div>
+          </section>
+
+          <section id="admin" class="section">
+            <div class="section-header">
+              <h2 data-i18n="admin.title">Owner Control</h2>
+              <p data-i18n="admin.subtitle">Only you can edit the site.</p>
+            </div>
+            <div id="settingsPanel" class="panel">
+              <form id="settingsForm" class="stack">
+                <input type="text" name="hero_title" placeholder="Hero title" data-i18n-placeholder="admin.heroTitle" />
+                <input type="text" name="hero_subtitle" placeholder="Hero subtitle" data-i18n-placeholder="admin.heroSubtitle" />
+                <textarea name="about_text" placeholder="About text" data-i18n-placeholder="admin.aboutText"></textarea>
+                <button type="submit" class="primary" data-i18n="admin.save">Save Site Text</button>
+              </form>
+            </div>
+            <div class="panel">
+              <div class="section-header compact">
+                <h2 data-i18n="admin.usersTitle">User Management</h2>
+                <p data-i18n="admin.usersSubtitle">Choose admins and manage bans.</p>
+              </div>
+              <div id="adminUsers" class="admin-users"></div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <button data-section="home" class="nav-link active">
+        <span class="material-symbols-rounded">home</span>
+      </button>
+      <button data-section="feed" class="nav-link">
+        <span class="material-symbols-rounded">dynamic_feed</span>
+      </button>
+      <button data-section="messages" class="nav-link">
+        <span class="material-symbols-rounded">chat_bubble</span>
+      </button>
+      <button data-section="profile" class="nav-link">
+        <span class="material-symbols-rounded">account_circle</span>
+      </button>
+      <button data-section="settings" class="nav-link">
+        <span class="material-symbols-rounded">settings</span>
+      </button>
+    </nav>
+
+    <div id="lightbox" class="modal hidden">
+      <div class="modal-backdrop" data-close="lightbox"></div>
+      <div class="modal-card">
+        <button class="modal-close" data-close="lightbox">✕</button>
+        <div id="lightboxBody" class="modal-media"></div>
+      </div>
+    </div>
+
+    <div id="shareModal" class="modal hidden">
+      <div class="modal-backdrop" data-close="shareModal"></div>
+      <div class="modal-card">
+        <button class="modal-close" data-close="shareModal">✕</button>
+        <div class="modal-header">
+          <h3 data-i18n="share.title">Share Post</h3>
+          <p class="muted" data-i18n="share.subtitle">Send this post to friends or groups.</p>
+        </div>
+        <div class="stack">
+          <textarea
+            id="shareText"
+            placeholder="Add a message (optional)"
+            data-i18n-placeholder="share.messagePlaceholder"
+          ></textarea>
+          <div id="shareList" class="share-list"></div>
+          <button id="shareSendBtn" class="primary" data-i18n="share.send">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="i18n.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
