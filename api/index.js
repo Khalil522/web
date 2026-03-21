@@ -379,3 +379,5 @@ app.post('/api/conversations/:id/seen', requireAuth, async (req, res) => {
 app.use((err, req, res, next) => { if (!err) return next(); res.status(400).json({ error: err.message || 'Error' }); });
 
 module.exports = app;
+ 
+ 
