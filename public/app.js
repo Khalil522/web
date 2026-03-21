@@ -253,8 +253,8 @@ const showApp = () => {
 };
 
 const apiFetch = async (url, options = {}) => {
-  const token = getToken();
-  if (token) { options.headers = options.headers || {}; options.headers['x-auth-token'] = token; }
+  const _tok = getToken();
+  if (_tok) { options.headers = options.headers || {}; options.headers['x-auth-token'] = token; }
   const token = getToken();
   if (token) { options.headers = options.headers || {}; options.headers['x-auth-token'] = token; }
   const res = await fetch(url, options);
@@ -1550,8 +1550,8 @@ const bootstrap = async () => {
   setupModals();
 
   try {
-    const _t = getToken();
-    if (!_t) { showAuth(); return; }
+    const _authTok = getToken();
+    if (!_authTok) { showAuth(); return; }
     const { user } = await apiFetch('/api/auth/me');
     if (user) {
       state.user = user;
