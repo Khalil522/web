@@ -16,6 +16,18 @@
       "dest": "/api/index.js"
     },
     {
+      "src": "/styles.css",
+      "dest": "/public/styles.css"
+    },
+    {
+      "src": "/app.js",
+      "dest": "/public/app.js"
+    },
+    {
+      "src": "/i18n.js",
+      "dest": "/public/i18n.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/index.html"
     }
