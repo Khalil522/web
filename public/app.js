@@ -1177,9 +1177,9 @@ const loadSettings = async () => {
   if($('#heroSubtitle')) if($('#heroSubtitle')) $('#heroSubtitle').textContent = settings.hero_subtitle || '';
   if($('#aboutText')) if($('#aboutText')) $('#aboutText').textContent = settings.about_text || '';
   if (state.user?.is_owner) {
-    if ($('#settingsForm [name="hero_title"]')) $('#settingsForm [name="hero_title"]')?.value = settings.hero_title || '';
-    if ($('#settingsForm [name="hero_subtitle"]')) $('#settingsForm [name="hero_subtitle"]')?.value = settings.hero_subtitle || '';
-    if ($('#settingsForm [name="about_text"]')) $('#settingsForm [name="about_text"]')?.value = settings.about_text || '';
+    if ($('#settingsForm [name="hero_title"]')) $('#settingsForm [name="hero_title"]')const _ht = ; if(_ht) _ht.value = settings.hero_title || '';
+    if ($('#settingsForm [name="hero_subtitle"]')) $('#settingsForm [name="hero_subtitle"]')const _hs = ; if(_hs) _hs.value = settings.hero_subtitle || '';
+    if ($('#settingsForm [name="about_text"]')) $('#settingsForm [name="about_text"]')const _at = ; if(_at) _at.value = settings.about_text || '';
   }
 };
 
