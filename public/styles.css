@@ -942,31 +942,36 @@ input[type="file"]{display:none}
 /* 1. The Row: Ensure it's a flex container and doesn't wrap */
 .message-row {
   display: flex !important;
-  flex-wrap: nowrap !important; /* Prevents elements from jumping to new lines */
+  flex-wrap: nowrap !important; /* يمنع نزول العناصر تحت بعضها */
   align-items: flex-end;
   gap: 12px;
   margin-bottom: 8px;
   width: 100%;
 }
-
 /* 2. The Avatar: The "Anti-Squash" settings */
 .message-avatar {
   width: 36px !important;
   height: 36px !important;
-  min-width: 36px !important; /* Force it to stay at 36px */
-  aspect-ratio: 1 / 1 !important; /* Ensure it stays a perfect circle */
-  border-radius: 50% !important;
-  flex-shrink: 0 !important; /* THE MOST IMPORTANT LINE: Prevents squishing */
+  min-width: 36px !important; /* حجز مساحة ثابتة */
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 50% !important; /* صورة دائرية */
+  flex-shrink: 0 !important; /* يمنع انضغاط الصورة نهائياً */
   object-fit: cover;
   opacity: 1 !important;
   display: block !important;
+  border: 1px solid var(--border);
 }
 
 /* 3. The Bubble: Limit width to leave room for the PFP */
 .message-bubble {
-  max-width: 75% !important; /* Keeps space for the 36px avatar + gap */
+  max-width: 75% !important; /* ترك مساحة كافية للصورة */
+  padding: 11px 15px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.55;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
   word-wrap: break-word;
-  overflow-wrap: break-word;
 }
 /* شكل رسائل "أنا" (الملونة) */
 .message-row.me .message-bubble {
