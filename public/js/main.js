@@ -49,7 +49,7 @@ const onLogin = async () => {
       await loadConversations();
       await refreshMessages();
     }
-  }, 8000);
+  }, 2000);
 };
 
 const bootstrap = async () => {
