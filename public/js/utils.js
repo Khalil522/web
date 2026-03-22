@@ -144,12 +144,12 @@ const applyTranslations = () => {
   });
 
   syncRecordLabel();
-  renderFeed();
-  renderProducts();
-  renderConversations();
-  renderUsersSelect();
-  renderGroupUserList();
-  renderAdminUsers();
+  if(typeof renderFeed==="function") renderFeed();
+  if(typeof renderProducts==="function") renderProducts();
+  if(typeof renderConversations==="function") renderConversations();
+  if(typeof renderUsersSelect==="function") renderUsersSelect();
+  if(typeof renderGroupUserList==="function") renderGroupUserList();
+  if(typeof renderAdminUsers==="function") renderAdminUsers();
 };
 
 const setLang = (lang, persist = true) => {

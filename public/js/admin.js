@@ -1,24 +1,3 @@
-const loadSettings = async () => {
-  const { settings } = await apiFetch('/api/settings');
-  state.settings = settings;
-  $('#heroTitle').textContent = settings.hero_title || '';
-  $('#heroSubtitle').textContent = settings.hero_subtitle || '';
-  $('#aboutText').textContent = settings.about_text || '';
-  if (state.user?.is_owner) {
-    $('#settingsForm [name="hero_title"]').value = settings.hero_title || '';
-    $('#settingsForm [name="hero_subtitle"]').value = settings.hero_subtitle || '';
-    $('#settingsForm [name="about_text"]').value = settings.about_text || '';
-  }
-};
-
-const loadUsers = async () => {
-  const { users } = await apiFetch('/api/users');
-  state.users = users;
-  renderUsersSelect();
-  renderGroupUserList();
-  refreshStats();
-};
-
 const renderAdminUsers = () => {
   const container = $('#adminUsers');
   if (!container) return;
