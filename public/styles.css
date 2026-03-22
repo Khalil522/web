@@ -939,42 +939,35 @@ input[type="file"]{display:none}
   gap: 4px;
 /* --- التعديل المصلح لظهور الصور والرسائل بجانب بعضها --- */
 
-.message-row { 
-  display: flex !important; 
-  gap: 12px; 
-  align-items: flex-end; 
-  padding: 4px 0; 
+/* 1. The Row: Ensure it's a flex container and doesn't wrap */
+.message-row {
+  display: flex !important;
+  flex-wrap: nowrap !important; /* Prevents elements from jumping to new lines */
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 8px;
   width: 100%;
 }
 
-.message-row.me { 
-  flex-direction: row-reverse; /* يضع رسائلك وصورتك جهة اليمين */
-}
-
-.message-avatar { 
-  width: 36px !important; /* تكبير الصورة قليلاً لتكون واضحة */
-  height: 36px !important; 
-  border-radius: 50% !important; /* جعلها دائرية تماماً كما طلبت */
-  object-fit: cover; 
-  flex-shrink: 0; /* يمنع النص من ضغط الصورة */
-  opacity: 1 !important; /* إظهار الصورة دائماً (حل مشكلة الاختفاء) */
-  border: 1px solid var(--border);
+/* 2. The Avatar: The "Anti-Squash" settings */
+.message-avatar {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important; /* Force it to stay at 36px */
+  aspect-ratio: 1 / 1 !important; /* Ensure it stays a perfect circle */
+  border-radius: 50% !important;
+  flex-shrink: 0 !important; /* THE MOST IMPORTANT LINE: Prevents squishing */
+  object-fit: cover;
+  opacity: 1 !important;
   display: block !important;
 }
 
+/* 3. The Bubble: Limit width to leave room for the PFP */
 .message-bubble {
-  max-width: 72%; /* ترك مساحة كافية للصورة بجانب الرسالة */
-  padding: 10px 14px;
-  border-radius: 18px;
-  font-size: 14px;
-  line-height: 1.5;
-  background: rgba(255,255,255,.08);
-  border: 1px solid var(--border);
+  max-width: 75% !important; /* Keeps space for the 36px avatar + gap */
   word-wrap: break-word;
-  position: relative;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow-wrap: break-word;
 }
-
 /* شكل رسائل "أنا" (الملونة) */
 .message-row.me .message-bubble {
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -986,10 +979,10 @@ input[type="file"]{display:none}
 
 /* شكل رسائل الطرف الآخر */
 .message-row:not(.me) .message-bubble { 
-  border-bottom-left-radius: 4px; 
   background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-bottom-left-radius: 4px; 
 }
-
 /* تحسين الميديا داخل الرسالة */
 .message-bubble img, 
 .message-bubble video { 
