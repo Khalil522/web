@@ -337,18 +337,15 @@ const refreshStats = () => {
   const memeCount = state.products.length;
   const postCount = state.posts.length;
   const friendCount = state.users.length;
-  $('#statMemes').textContent = String(memeCount);
-  $('#statPosts').textContent = String(postCount);
-  $('#statFriends').textContent = String(friendCount);
+  if($('#statMemes')) $('#statMemes').textContent = String(memeCount);
+  if($('#statPosts')) $('#statPosts').textContent = String(postCount);
+  if($('#statFriends')) $('#statFriends').textContent = String(friendCount);
 
   const myPosts = state.user ? state.posts.filter((p) => p.user_id === state.user.id).length : 0;
   const myProducts = state.user?.is_owner ? memeCount : 0;
-  const profileProducts = $('#profileStatProducts');
-  if (profileProducts) profileProducts.textContent = String(myProducts);
-  const profilePosts = $('#profileStatPosts');
-  if (profilePosts) profilePosts.textContent = String(myPosts);
-  const profileFriends = $('#profileStatFriends');
-  if (profileFriends) profileFriends.textContent = String(friendCount);
+  if ($('#profileStatProducts')) $('#profileStatProducts').textContent = String(myProducts);
+  if ($('#profileStatPosts')) $('#profileStatPosts').textContent = String(myPosts);
+  if ($('#profileStatFriends')) $('#profileStatFriends').textContent = String(friendCount);
 };
 
 const renderHomeNews = () => {
@@ -1082,13 +1079,13 @@ const updateProfileHeader = () => {
 
   // welcome banner
   const welcomeUsername = $('#welcomeUsername');
-  if (welcomeUsername) welcomeUsername.textContent = state.user.display_name || '';
+  if (welcomeUsername) if(welcomeUsername) welcomeUsername.textContent = state.user.display_name || '';
   const welcomeAvatar = $('#welcomeAvatar');
   if (welcomeAvatar) welcomeAvatar.src = state.user.avatar_url || '';
   const sideAvatar = $('#sideAvatar');
   if (sideAvatar) sideAvatar.src = state.user.avatar_url || '';
   const sideUserName = $('#sideUserName');
-  if (sideUserName) sideUserName.textContent = state.user.display_name || '';
+  if (sideUserName) if(sideUserName) sideUserName.textContent = state.user.display_name || '';
   const composeAvatar = $('#composeAvatar');
   if (composeAvatar) composeAvatar.src = state.user.avatar_url || '';
 
@@ -1096,9 +1093,9 @@ const updateProfileHeader = () => {
   const greeting = $('#welcomeGreeting');
   if (greeting) {
     const hour = new Date().getHours();
-    if (hour < 12) greeting.textContent = 'Good morning ☀️';
-    else if (hour < 17) greeting.textContent = 'Good afternoon 👋';
-    else greeting.textContent = 'Good evening 🌙';
+    if (hour < 12) if(greeting) greeting.textContent = 'Good morning ☀️';
+    else if (hour < 17) if(greeting) greeting.textContent = 'Good afternoon 👋';
+    else if(greeting) greeting.textContent = 'Good evening 🌙';
   }
 };
 
@@ -1175,13 +1172,13 @@ const setupVoiceRecorder = () => {
 const loadSettings = async () => {
   const { settings } = await apiFetch('/api/settings');
   state.settings = settings;
-  $('#heroTitle').textContent = settings.hero_title || '';
-  $('#heroSubtitle').textContent = settings.hero_subtitle || '';
-  $('#aboutText').textContent = settings.about_text || '';
+  if($('#heroTitle')) $('#heroTitle').textContent = settings.hero_title || '';
+  if($('#heroSubtitle')) $('#heroSubtitle').textContent = settings.hero_subtitle || '';
+  if($('#aboutText')) $('#aboutText').textContent = settings.about_text || '';
   if (state.user?.is_owner) {
-    $('#settingsForm [name="hero_title"]').value = settings.hero_title || '';
-    $('#settingsForm [name="hero_subtitle"]').value = settings.hero_subtitle || '';
-    $('#settingsForm [name="about_text"]').value = settings.about_text || '';
+    if ($('#settingsForm [name="hero_title"]')) $('#settingsForm [name="hero_title"]').value = settings.hero_title || '';
+    if ($('#settingsForm [name="hero_subtitle"]')) $('#settingsForm [name="hero_subtitle"]').value = settings.hero_subtitle || '';
+    if ($('#settingsForm [name="about_text"]')) $('#settingsForm [name="about_text"]').value = settings.about_text || '';
   }
 };
 
@@ -1362,7 +1359,7 @@ const openConversation = async (convo) => {
   }
   state.activeConvoId = convo.id;
   state.activeConversation = convo;
-  $('#convoHeader').textContent = convo.display_name;
+  if($('#convoHeader')) $('#convoHeader').textContent = convo.display_name;
   // add back button on mobile
   const chatHeader = $('.chat-header');
   if (chatHeader && !chatHeader.querySelector('.chat-back-btn')) {
@@ -1390,7 +1387,7 @@ const openConversation = async (convo) => {
     }
   }
   const status = $('#convoStatus');
-  if (status) {
+  if (status && convo) {
     status.textContent = convo.is_group
       ? `${convo.member_count || 0} ${window.I18N[state.lang].messages.members}`
       : '';
@@ -1810,8 +1807,8 @@ const onLogin = async () => {
     showSection('home');
   }
 
-  $('#profileForm [name="displayName"]').value = state.user.display_name || '';
-  $('#profileForm [name="bio"]').value = state.user.bio || '';
+  if ($('#profileForm [name="displayName"]')) $('#profileForm [name="displayName"]').value = state.user.display_name || '';
+  if ($('#profileForm [name="bio"]')) $('#profileForm [name="bio"]').value = state.user.bio || '';
   applyTheme(state.user);
   updateProfileHeader();
   const chatAvatar = $('#chatAvatar');
@@ -1821,7 +1818,7 @@ const onLogin = async () => {
   }
 
   const themeForm = $('#themeForm');
-  if (themeForm) {
+  if (themeForm && themeForm.themeAccent) {
     themeForm.themeAccent.value = state.user.theme_accent || defaultTheme.accent;
     themeForm.themeSurface.value = state.user.theme_surface || defaultTheme.surface;
     themeForm.themeBackground.value = state.user.theme_bg || defaultTheme.background;
