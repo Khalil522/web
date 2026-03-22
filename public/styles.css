@@ -660,3 +660,51 @@ input[type="file"]{display:none}
   gap: 3px;
 }
 .seen-indicator .material-symbols-rounded { font-size: 13px; font-variation-settings:'FILL' 1; }
+
+/* ============================================================
+   MOBILE FEED FIX
+============================================================ */
+@media (max-width: 767px) {
+  .feed-tabs {
+    gap: 8px;
+    padding: 4px 0 8px;
+  }
+  .feed-tab {
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+  .feed-item {
+    border-radius: 16px;
+    padding: 14px;
+  }
+  .feed-actions {
+    gap: 4px;
+  }
+  .feed-action {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+  .compose-header {
+    gap: 10px;
+  }
+  .compose-header textarea {
+    font-size: 14px;
+  }
+  /* messages mobile - fully fixed */
+  #messages .section-header {
+    margin-bottom: 12px;
+  }
+  .convo-list {
+    height: calc(100dvh - 220px);
+    overflow-y: auto;
+  }
+  .convo-chat {
+    height: calc(100dvh - 70px) !important;
+  }
+  .message-form {
+    padding: 10px 12px;
+  }
+  .message-input-row {
+    gap: 6px;
+  }
+}

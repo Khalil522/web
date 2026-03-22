@@ -551,7 +551,7 @@ const renderFeed = () => {
       });
     }
   }
-  posts.forEach((post) => {
+  (posts || []).forEach((post) => {
     const card = document.createElement('div');
     card.className = 'panel feed-item';
     card.dataset.postId = String(post.id);
@@ -1123,7 +1123,7 @@ const setupFileInputs = () => {
 const setupVoiceRecorder = () => {
   const recordBtn = $('#recordBtn');
   const voicePreview = $('#voicePreview');
-  if (!recordBtn) return;
+  if (!recordBtn) { console.log('recordBtn not found'); return; }
 
   let recorder = null;
   let chunks = [];
@@ -1655,8 +1655,8 @@ const setupForms = () => {
     });
   }
 
-  $('#startChatBtn').addEventListener('click', async () => {
-    const userId = $('#userSelect').value;
+  $('#startChatBtn')?.addEventListener('click', async () => {
+    const userId = $('#userSelect')?.value;
     if (!userId) return;
     try {
       const { conversationId } = await apiFetch('/api/conversations', {
@@ -1759,7 +1759,7 @@ const setupModals = () => {
       const target = btn.dataset.close;
       if (target === 'lightbox') closeLightbox();
       if (target === 'shareModal') closeShareModal();
-      if (target === 'userProfileModal') $('#userProfileModal')?.classList.add('hidden');
+      if (target === 'userProfileModal') { $('#userProfileModal')?.classList.add('hidden'); }
     });
   });
   window.addEventListener('keydown', (e) => {
