@@ -423,3 +423,240 @@ input[type="file"]{display:none}
 .chat-back-btn { display: none; align-items:center; gap:6px; background:transparent; border:none; color:var(--muted-2); font-size:14px; font-weight:600; cursor:pointer; padding:0; }
 .chat-back-btn:hover { color:var(--text); }
 .chat-back-btn .material-symbols-rounded { font-size:20px; }
+
+
+/* ============================================================
+   MOBILE MESSAGES - FULL SCREEN CHAT
+============================================================ */
+@media (max-width: 767px) {
+  .messages-layout {
+    grid-template-columns: 1fr !important;
+    height: calc(100dvh - 160px) !important;
+    position: relative;
+    overflow: hidden;
+  }
+  .convo-list {
+    width: 100%;
+    height: 100%;
+    max-height: none !important;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .convo-chat {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    background: var(--bg);
+    height: 100% !important;
+  }
+  .convo-chat.open {
+    transform: translateX(0);
+  }
+  .message-input-row input { font-size: 16px; }
+  .message-list { padding: 10px 12px; }
+  .message-bubble { max-width: 85%; }
+}
+
+/* ============================================================
+   BACK BUTTON
+============================================================ */
+.chat-back-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--muted-2);
+  cursor: pointer;
+  transition: all .18s var(--ease);
+  flex-shrink: 0;
+}
+.chat-back-btn:hover { background: var(--surface-hover); color: var(--text); }
+.chat-back-btn .material-symbols-rounded { font-size: 18px; }
+@media (max-width: 767px) { .chat-back-btn { display: flex; } }
+
+/* ============================================================
+   USER LIST IN MESSAGES - CLICKABLE USERS
+============================================================ */
+.user-select-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 6px;
+}
+.user-select-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all .18s var(--ease);
+  background: var(--surface);
+}
+.user-select-item:hover {
+  background: var(--surface-2);
+  border-color: rgba(var(--accent-rgb),.20);
+}
+.user-select-item img {
+  width: 36px; height: 36px;
+  border-radius: var(--pfp-radius);
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+.user-select-item .user-item-info { flex: 1; min-width: 0; }
+.user-select-item .user-item-name { font-size: 13px; font-weight: 600; }
+.user-select-item .user-item-role { font-size: 11px; color: var(--muted); }
+
+/* ============================================================
+   USER PROFILE MODAL
+============================================================ */
+.profile-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+}
+.profile-modal-avatar {
+  width: 80px; height: 80px;
+  border-radius: var(--pfp-radius);
+  object-fit: cover;
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+.profile-modal-name { font-size: 20px; font-weight: 800; text-align: center; }
+.profile-modal-bio { font-size: 13px; color: var(--muted-2); text-align: center; line-height: 1.5; }
+.profile-modal-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 999px;
+  background: rgba(var(--accent-rgb),.10);
+  border: 1px solid rgba(var(--accent-rgb),.22);
+  font-size: 12px; font-weight: 600; color: var(--accent);
+}
+.profile-modal-stats {
+  display: flex; gap: 24px;
+  padding: 14px; border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  width: 100%;
+}
+.profile-modal-stat { display: flex; flex-direction: column; align-items: center; flex: 1; }
+.profile-modal-stat .n { font-size: 18px; font-weight: 800; color: var(--accent); }
+.profile-modal-stat .l { font-size: 11px; color: var(--muted); }
+.profile-modal-actions { display: flex; gap: 8px; width: 100%; }
+.profile-modal-actions button { flex: 1; }
+
+/* ============================================================
+   SCHOOLS FEED TABS
+============================================================ */
+.feed-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 16px;
+  scrollbar-width: none;
+}
+.feed-tabs::-webkit-scrollbar { display: none; }
+.feed-tab {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted-2);
+  font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  transition: all .18s var(--ease);
+  white-space: nowrap;
+}
+.feed-tab:hover { background: var(--surface-2); color: var(--text); }
+.feed-tab.active {
+  background: linear-gradient(135deg, rgba(var(--accent-rgb),.15), rgba(167,139,250,.12));
+  border-color: rgba(var(--accent-rgb),.30);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ============================================================
+   CREDIT BAR
+============================================================ */
+.credit-bar {
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 11px;
+  color: var(--muted);
+  background: rgba(255,255,255,.02);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: .02em;
+}
+.credit-bar strong { color: var(--accent); }
+
+/* ============================================================
+   TEXT ANIMATIONS
+============================================================ */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes gradientShift {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes float {
+  0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)}
+}
+
+.brand-title, .auth-logo-title {
+  background: linear-gradient(135deg,#fff,var(--accent),var(--accent-2),#fff);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+.welcome-name {
+  background: linear-gradient(135deg,#fff,var(--accent),var(--accent-2));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease infinite;
+}
+.topbar-logo {
+  background: linear-gradient(135deg,#fff,var(--accent));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease infinite;
+}
+.auth-logo-icon { animation: float 3s ease infinite; }
+
+/* ============================================================
+   ALLOW ALL USERS TO POST - hide form only for non-logged in
+============================================================ */
+.post-compose { display: block; }
+
+/* ============================================================
+   SEEN INDICATOR
+============================================================ */
+.seen-indicator {
+  font-size: 11px;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.seen-indicator .material-symbols-rounded { font-size: 13px; font-variation-settings:'FILL' 1; }

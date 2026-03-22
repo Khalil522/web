@@ -1,4 +1,16 @@
-﻿const state = {
+﻿const SCHOOLS = {
+  all: { name: 'All', emoji: '🌐' },
+  news: { name: 'News', emoji: '📰' },
+  maliha: { name: 'Maliha Hamidou', emoji: '🏫' },
+  bencerjeb: { name: 'Dr. Bencerjeb', emoji: '🏫' },
+  lotfi: { name: 'Colonel Lotfi', emoji: '🏫' },
+  ibnkhaldoun: { name: 'Ibn Khaldoun', emoji: '🏫' },
+  fatima: { name: 'Fatima Boudjlida', emoji: '🏫' },
+};
+
+let activeFeedTab = 'all';
+
+const state = {
   user: null,
   lang: 'en',
   settings: {},
@@ -172,6 +184,7 @@ const applyTranslations = () => {
   renderProducts();
   renderConversations();
   renderUsersSelect();
+  renderUserSelectList();
   renderGroupUserList();
   renderAdminUsers();
 };
@@ -208,6 +221,44 @@ const closeLightbox = () => {
   if (!lightbox || !body) return;
   body.innerHTML = '';
   lightbox.classList.add('hidden');
+};
+
+const openUserProfile = (userId) => {
+  const user = state.users.find((u) => u.id === userId);
+  if (!user) return;
+  const modal = $('#userProfileModal');
+  if (!modal) return;
+  const img = $('#profileModalAvatar');
+  if (img) img.src = user.avatar_url || '';
+  const name = $('#profileModalName');
+  if (name) { name.textContent = user.display_name || ''; if (user.is_owner || user.is_admin) name.classList.add('admin-name'); else name.classList.remove('admin-name'); }
+  const bio = $('#profileModalBio');
+  if (bio) bio.textContent = user.bio || 'No bio yet.';
+  const posts = state.posts.filter((p) => p.user_id === userId).length;
+  const postsEl = $('#profileModalPosts');
+  if (postsEl) postsEl.textContent = String(posts);
+  const friendsEl = $('#profileModalFriends');
+  if (friendsEl) friendsEl.textContent = String(state.users.length);
+  const msgBtn = $('#profileModalMsgBtn');
+  if (msgBtn && userId !== state.user?.id) {
+    msgBtn.classList.remove('hidden');
+    msgBtn.onclick = async () => {
+      try {
+        const { conversationId } = await apiFetch('/api/conversations', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId })
+        });
+        modal.classList.add('hidden');
+        showSection('messages');
+        await loadConversations();
+        const convo = state.conversations.find((c) => c.id === conversationId);
+        if (convo) openConversation(convo);
+      } catch (err) { toast(err.message); }
+    };
+  } else if (msgBtn) {
+    msgBtn.classList.add('hidden');
+  }
+  modal.classList.remove('hidden');
 };
 
 const openShareModal = (post) => {
@@ -480,7 +531,27 @@ const renderProducts = () => {
 const renderFeed = () => {
   const list = $('#feedList');
   list.innerHTML = '';
-  state.posts.forEach((post) => {
+  let posts = state.posts;
+  // filter by tab
+  if (activeFeedTab && activeFeedTab !== 'all') {
+    if (activeFeedTab === 'news') {
+      posts = posts.filter((p) => {
+        const u = state.users.find((u) => u.id === p.user_id);
+        return u && (u.is_admin || u.is_owner);
+      });
+    } else {
+      const schoolMap = {
+        maliha: 'maliha', bencerjeb: 'bencerjeb',
+        lotfi: 'lotfi', ibnkhaldoun: 'ibnkhaldoun', fatima: 'fatima'
+      };
+      const schoolKey = schoolMap[activeFeedTab];
+      posts = posts.filter((p) => {
+        const u = state.users.find((u) => u.id === p.user_id);
+        return u && u.school === schoolKey;
+      });
+    }
+  }
+  posts.forEach((post) => {
     const card = document.createElement('div');
     card.className = 'panel feed-item';
     card.dataset.postId = String(post.id);
@@ -493,6 +564,8 @@ const renderFeed = () => {
     avatar.className = 'avatar';
     avatar.src = post.avatar_url || '';
     avatar.alt = post.display_name;
+    avatar.style.cursor = 'pointer';
+    avatar.addEventListener('click', (e) => { e.stopPropagation(); openUserProfile(post.user_id); });
     userWrap.appendChild(avatar);
 
     const name = document.createElement('span');
@@ -648,6 +721,54 @@ const renderFeed = () => {
 
     list.appendChild(card);
   });
+};
+
+const renderUserSelectList = () => {
+  const list = $('#userSelectList');
+  if (!list) return;
+  const query = ($('#userSearch')?.value || '').toLowerCase();
+  list.innerHTML = '';
+  state.users
+    .filter((u) => u.id !== state.user?.id)
+    .filter((u) => {
+      if (!query) return true;
+      return u.display_name?.toLowerCase().includes(query) || u.email?.toLowerCase().includes(query);
+    })
+    .forEach((u) => {
+      const item = document.createElement('div');
+      item.className = 'user-select-item';
+      const img = document.createElement('img');
+      img.src = u.avatar_url || '';
+      img.alt = u.display_name;
+      const info = document.createElement('div');
+      info.className = 'user-item-info';
+      const name = document.createElement('div');
+      name.className = 'user-item-name';
+      name.textContent = u.display_name;
+      if (u.is_owner || u.is_admin) name.classList.add('admin-name');
+      const role = document.createElement('div');
+      role.className = 'user-item-role';
+      role.textContent = u.is_owner ? '👑 Owner' : u.is_admin ? '⚡ Admin' : '👤 Member';
+      info.appendChild(name);
+      info.appendChild(role);
+      item.appendChild(img);
+      item.appendChild(info);
+      item.addEventListener('click', async () => {
+        try {
+          const { conversationId } = await apiFetch('/api/conversations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: u.id })
+          });
+          await loadConversations();
+          const convo = state.conversations.find((c) => c.id === conversationId);
+          if (convo) openConversation(convo);
+        } catch (err) {
+          toast(err.message);
+        }
+      });
+      list.appendChild(item);
+    });
 };
 
 const renderUsersSelect = () => {
@@ -921,7 +1042,15 @@ const renderMessages = (messages, otherLastSeenAt) => {
       otherLastSeenAt &&
       m.created_at <= otherLastSeenAt;
     const timeSpan = document.createElement('span');
-    timeSpan.textContent = ` · ${time}${seen ? ' · ' + window.I18N[state.lang].labels.seen : ''}`;
+    if (seen) {
+        const seenSpan = document.createElement('span');
+        seenSpan.className = 'seen-indicator';
+        seenSpan.innerHTML = '· <span class="material-symbols-rounded">done_all</span> Seen';
+        meta.appendChild(document.createTextNode(' · ' + time + ' '));
+        meta.appendChild(seenSpan);
+      } else {
+        timeSpan.textContent = ' · ' + time;
+      }
     meta.appendChild(timeSpan);
 
     content.appendChild(bubble);
@@ -1221,6 +1350,11 @@ const loadConversations = async () => {
 
 const openConversation = async (convo) => {
   if (!convo) return;
+  // mobile: slide in chat panel
+  const convoChat = document.querySelector('.convo-chat');
+  if (convoChat && window.innerWidth < 768) {
+    convoChat.classList.add('open');
+  }
   // mobile: show chat, hide list
   const layout = document.querySelector('.messages-layout');
   if (layout && window.innerWidth < 768) {
@@ -1612,6 +1746,7 @@ const setupLangToggles = () => {
 const setupMessageSearch = () => {
   $('#userSearch')?.addEventListener('input', () => {
     renderUsersSelect();
+    renderUserSelectList();
   });
   $('#groupSearch')?.addEventListener('input', () => {
     renderGroupUserList();
@@ -1624,6 +1759,7 @@ const setupModals = () => {
       const target = btn.dataset.close;
       if (target === 'lightbox') closeLightbox();
       if (target === 'shareModal') closeShareModal();
+      if (target === 'userProfileModal') $('#userProfileModal')?.classList.add('hidden');
     });
   });
   window.addEventListener('keydown', (e) => {
@@ -1662,7 +1798,7 @@ const onLogin = async () => {
   $('#productFormWrap').classList.toggle('hidden', !isOwner);
   const prodToggleBtn = $('#addProductToggle');
   if (prodToggleBtn) prodToggleBtn.classList.toggle('hidden', !isOwner);
-  $('#postFormWrap').classList.toggle('hidden', !isAdmin);
+  // All users can post now - postFormWrap always visible
   $('#admin').classList.toggle('active', false);
   $('#admin').classList.toggle('hidden', !isAdmin);
   $$('.nav-link').find((b) => b.dataset.section === 'admin')?.classList.toggle('hidden', !isAdmin);
@@ -1708,7 +1844,7 @@ const onLogin = async () => {
       await loadConversations();
       await refreshMessages();
     }
-  }, 8000);
+  }, 4000);
 };
 
 const bootstrap = async () => {
@@ -1735,6 +1871,8 @@ const bootstrap = async () => {
   setupLangToggles();
   setupMessageSearch();
   setupModals();
+  setupChatBack();
+  setupFeedTabs();
 
   try {
     const _authTok = getToken();

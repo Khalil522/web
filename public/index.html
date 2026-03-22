@@ -165,6 +165,9 @@
         </button>
       </div>
     </header>
+    <div class="credit-bar">
+      🎓 This project was made by <strong>louay_.idk</strong> with the help of <strong>AI</strong>
+    </div>
 
     <main class="main">
 
@@ -245,7 +248,7 @@
           <p data-i18n="feed.subtitle">Latest posts from THSG</p>
         </div>
 
-        <div id="postFormWrap" class="post-compose panel hidden">
+        <div id="postFormWrap" class="post-compose panel">
           <form id="postForm" class="stack">
             <div class="compose-header">
               <img id="composeAvatar" class="compose-avatar" alt="" src="" />
@@ -264,6 +267,15 @@
           </form>
         </div>
 
+        <div class="feed-tabs" id="feedTabs">
+          <button class="feed-tab active" data-tab="all">🌐 All</button>
+          <button class="feed-tab" data-tab="news">📰 News</button>
+          <button class="feed-tab" data-tab="maliha">🏫 Maliha Hamidou</button>
+          <button class="feed-tab" data-tab="bencerjeb">🏫 Dr. Bencerjeb</button>
+          <button class="feed-tab" data-tab="lotfi">🏫 Colonel Lotfi</button>
+          <button class="feed-tab" data-tab="ibnkhaldoun">🏫 Ibn Khaldoun</button>
+          <button class="feed-tab" data-tab="fatima">🏫 Fatima Boudjlida</button>
+        </div>
         <div id="feedList" class="feed-list"></div>
       </section>
 
@@ -282,10 +294,7 @@
               <div class="convo-search-row">
                 <input id="userSearch" type="search" placeholder="Search users" data-i18n-placeholder="messages.searchUsers" />
               </div>
-              <div class="convo-new-row">
-                <select id="userSelect"></select>
-                <button id="startChatBtn" class="primary small-btn" data-i18n="messages.startButton">Go</button>
-              </div>
+              <div id="userSelectList" class="user-select-list"></div>
             </div>
             <div class="group-create">
               <span class="group-title" data-i18n="messages.groupTitle">Create Group</span>
@@ -498,6 +507,37 @@
 </nav>
 
 <!-- ── MODALS ──────────────────────────── -->
+<div id="userProfileModal" class="modal hidden">
+  <div class="modal-backdrop" data-close="userProfileModal"></div>
+  <div class="modal-card">
+    <button class="modal-close" data-close="userProfileModal">✕</button>
+    <div class="profile-modal-content">
+      <img id="profileModalAvatar" class="profile-modal-avatar" alt="pfp" src="" />
+      <div id="profileModalName" class="profile-modal-name">—</div>
+      <div id="profileModalBio" class="profile-modal-bio muted"></div>
+      <div id="profileModalSchool" class="profile-modal-badge hidden">
+        <span class="material-symbols-rounded">school</span>
+        <span id="profileModalSchoolText">—</span>
+      </div>
+      <div class="profile-modal-stats">
+        <div class="profile-modal-stat">
+          <span id="profileModalPosts" class="n">0</span>
+          <span class="l">Posts</span>
+        </div>
+        <div class="profile-modal-stat">
+          <span id="profileModalFriends" class="n">0</span>
+          <span class="l">Friends</span>
+        </div>
+      </div>
+      <div class="profile-modal-actions">
+        <button id="profileModalMsgBtn" class="primary small-btn">
+          <span class="material-symbols-rounded">chat_bubble</span> Message
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="lightbox" class="modal hidden">
   <div class="modal-backdrop" data-close="lightbox"></div>
   <div class="modal-card media-modal">
