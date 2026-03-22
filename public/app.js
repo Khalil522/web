@@ -1221,9 +1221,30 @@ const loadConversations = async () => {
 
 const openConversation = async (convo) => {
   if (!convo) return;
+  // mobile: show chat, hide list
+  const layout = document.querySelector('.messages-layout');
+  if (layout && window.innerWidth < 768) {
+    layout.classList.add('chat-open');
+  }
   state.activeConvoId = convo.id;
   state.activeConversation = convo;
   $('#convoHeader').textContent = convo.display_name;
+  // add back button on mobile
+  const chatHeader = $('.chat-header');
+  if (chatHeader && !chatHeader.querySelector('.chat-back-btn')) {
+    const backBtn = document.createElement('button');
+    backBtn.className = 'chat-back-btn';
+    backBtn.innerHTML = '<span class="material-symbols-rounded">arrow_back_ios</span>';
+    backBtn.id = 'chatBackBtn';
+    backBtn.addEventListener('click', () => {
+      const layout = document.querySelector('.messages-layout');
+      if (layout) layout.classList.remove('chat-open');
+      state.activeConvoId = null;
+      state.activeConversation = null;
+      $('#messageForm')?.classList.add('hidden');
+    });
+    chatHeader.insertBefore(backBtn, chatHeader.firstChild);
+  }
   const chatAvatar = $('#chatAvatar');
   if (chatAvatar) {
     if (convo.is_group) {

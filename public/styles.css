@@ -393,9 +393,9 @@ input[type="file"]{display:none}
   .app-content{margin-left:0 !important;margin-right:0 !important}
   .main{padding:14px 12px 90px}
   .bottom-nav{display:flex}
-  .messages-layout{grid-template-columns:1fr;height:auto}
-  .convo-chat{height:58dvh}
-  .convo-list{max-height:280px}
+  .messages-layout{grid-template-columns:1fr;height:auto;display:flex;flex-direction:column;gap:10px}
+  .convo-chat{height:calc(100dvh - 280px);min-height:400px}
+  .convo-list{max-height:260px}
   .biggest-news-card{min-height:200px}
   .biggest-news-card .news-img{height:160px}
   .card{width:140px}
@@ -407,3 +407,19 @@ input[type="file"]{display:none}
   .feed-action span:last-child{display:none}
   .modal-card{padding:16px;border-radius:20px}
 }
+/* Mobile message fixes */
+@media (max-width:767px) {
+  .message-input-row input { font-size: 16px; } /* prevent zoom on iOS */
+  .message-list { padding: 10px 12px; }
+  .message-bubble { max-width: 85%; font-size: 14px; }
+  .convo-list { overflow-y: auto; }
+  .messages-layout { gap: 8px; }
+  /* when chat is open, hide convo list on mobile */
+  .messages-layout.chat-open .convo-list { display: none; }
+  .messages-layout.chat-open .convo-chat { height: calc(100dvh - 170px); }
+  /* back button for mobile */
+  .chat-back-btn { display: flex !important; }
+}
+.chat-back-btn { display: none; align-items:center; gap:6px; background:transparent; border:none; color:var(--muted-2); font-size:14px; font-weight:600; cursor:pointer; padding:0; }
+.chat-back-btn:hover { color:var(--text); }
+.chat-back-btn .material-symbols-rounded { font-size:20px; }
