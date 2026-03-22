@@ -308,6 +308,7 @@ const apiFetch = async (url, options = {}) => {
   if (_token) {
     options.headers = options.headers || {};
     options.headers['x-auth-token'] = _token;
+    options.headers['Authorization'] = 'Bearer ' + _token;
   }
   
   const res = await fetch(url, options);
@@ -337,9 +338,9 @@ const refreshStats = () => {
   const memeCount = state.products.length;
   const postCount = state.posts.length;
   const friendCount = state.users.length;
-  if($('#statMemes')) $('#statMemes').textContent = String(memeCount);
-  if($('#statPosts')) $('#statPosts').textContent = String(postCount);
-  if($('#statFriends')) $('#statFriends').textContent = String(friendCount);
+  if($('#statMemes')) if($('#statMemes')) $('#statMemes').textContent = String(memeCount);
+  if($('#statPosts')) if($('#statPosts')) $('#statPosts').textContent = String(postCount);
+  if($('#statFriends')) if($('#statFriends')) $('#statFriends').textContent = String(friendCount);
 
   const myPosts = state.user ? state.posts.filter((p) => p.user_id === state.user.id).length : 0;
   const myProducts = state.user?.is_owner ? memeCount : 0;
@@ -1172,13 +1173,13 @@ const setupVoiceRecorder = () => {
 const loadSettings = async () => {
   const { settings } = await apiFetch('/api/settings');
   state.settings = settings;
-  if($('#heroTitle')) $('#heroTitle').textContent = settings.hero_title || '';
-  if($('#heroSubtitle')) $('#heroSubtitle').textContent = settings.hero_subtitle || '';
-  if($('#aboutText')) $('#aboutText').textContent = settings.about_text || '';
+  if($('#heroTitle')) if($('#heroTitle')) $('#heroTitle').textContent = settings.hero_title || '';
+  if($('#heroSubtitle')) if($('#heroSubtitle')) $('#heroSubtitle').textContent = settings.hero_subtitle || '';
+  if($('#aboutText')) if($('#aboutText')) $('#aboutText').textContent = settings.about_text || '';
   if (state.user?.is_owner) {
-    if ($('#settingsForm [name="hero_title"]')) $('#settingsForm [name="hero_title"]').value = settings.hero_title || '';
-    if ($('#settingsForm [name="hero_subtitle"]')) $('#settingsForm [name="hero_subtitle"]').value = settings.hero_subtitle || '';
-    if ($('#settingsForm [name="about_text"]')) $('#settingsForm [name="about_text"]').value = settings.about_text || '';
+    if ($('#settingsForm [name="hero_title"]')) $('#settingsForm [name="hero_title"]')?.value = settings.hero_title || '';
+    if ($('#settingsForm [name="hero_subtitle"]')) $('#settingsForm [name="hero_subtitle"]')?.value = settings.hero_subtitle || '';
+    if ($('#settingsForm [name="about_text"]')) $('#settingsForm [name="about_text"]')?.value = settings.about_text || '';
   }
 };
 
@@ -1338,7 +1339,7 @@ const loadConversations = async () => {
   if (!state.activeConversation) {
     state.activeConvoId = null;
     const header = $('#convoHeader');
-    if (header) header.textContent = window.I18N[state.lang].messages.noChat;
+    if (header) header.textContent = 'Select a chat';
     $('#messageForm')?.classList.add('hidden');
   }
   renderConversations();
@@ -1347,6 +1348,11 @@ const loadConversations = async () => {
 
 const openConversation = async (convo) => {
   if (!convo) return;
+  // show message list, hide empty state
+  const emptyState = $('#chatEmptyState');
+  const msgList = $('#messageList');
+  if (emptyState) emptyState.style.display = 'none';
+  if (msgList) msgList.style.display = 'flex';
   // mobile: slide in chat panel
   const convoChat = document.querySelector('.convo-chat');
   if (convoChat && window.innerWidth < 768) {

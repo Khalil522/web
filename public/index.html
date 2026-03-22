@@ -313,7 +313,11 @@
                 <div id="convoStatus" class="muted"> </div>
               </div>
             </div>
-            <div id="messageList" class="message-list"></div>
+            <div class="chat-empty" id="chatEmptyState">
+                  <span class="material-symbols-rounded">chat_bubble</span>
+                  <p>Select a conversation</p>
+                </div>
+                <div id="messageList" class="message-list" style="display:none"></div>
             <form id="messageForm" class="message-form hidden">
               <div class="message-input-row">
                 <input type="text" name="text" placeholder="Type a message..." data-i18n-placeholder="messages.inputPlaceholder" />
