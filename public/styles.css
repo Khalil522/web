@@ -776,31 +776,46 @@ textarea {
   gap: 8px;
 }
 
+/* إصلاح تموضع صورة البروفايل والرسالة على الهاتف */
 .message-row {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 10px;
-  align-items: end;
+  display: flex !important;
+  align-items: flex-end; /* لمحاذاة الصورة مع أسفل الفقاعة */
+  gap: 12px;
+  margin-bottom: 8px;
+  width: 100%;
 }
 
+/* دفع رسائلك أنت إلى الجهة الأخرى */
 .message-row.me {
-  grid-template-columns: 1fr auto;
+  flex-direction: row-reverse;
 }
 
+/* ضبط حجم الصورة ليكون ثابتاً ولا يتأثر بضغط العناصر */
 .message-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--pfp-radius);
+  width: 35px !important;
+  height: 35px !important;
+  border-radius: 50%;
+  flex-shrink: 0; /* يمنع الصورة من التصغر عند زيادة النص */
   object-fit: cover;
-  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--outline);
 }
 
+/* تأكد أن الفقاعة تأخذ المساحة المتبقية فقط */
 .message-bubble {
-  padding: 10px 14px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  max-width: 520px;
+  max-width: 75% !important;
+  word-wrap: break-word; /* لمنع النص الطويل من الخروج عن الشاشة */
+}
+
+@media (max-width: 640px) {
+  .message-avatar {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  
+.message-bubble {
+    max-width: 85% !important;
+    font-size: 14px;
+  }
 }
 
 .message-row.me .message-bubble {
@@ -860,6 +875,14 @@ textarea {
   border-radius: var(--card-radius);
   opacity: 0;
   transition: opacity 0.2s ease;
+}
+.message img,
+.message video {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--outline);
+  margin-top: 4px;
+  display: block;
 }
 
 .profile-card-simple.has-bg::before {
