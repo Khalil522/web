@@ -1,10 +1,20 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>THSG – Tlemcen High Schools Group</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/feed.css" />
+  <link rel="stylesheet" href="css/messages.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/modals.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
 </head>
 <body>
@@ -165,9 +175,6 @@
         </button>
       </div>
     </header>
-    <div class="credit-bar">
-      🎓 This project was made by <strong>louay_.idk</strong> with the help of <strong>AI</strong>
-    </div>
 
     <main class="main">
 
@@ -248,7 +255,7 @@
           <p data-i18n="feed.subtitle">Latest posts from THSG</p>
         </div>
 
-        <div id="postFormWrap" class="post-compose panel">
+        <div id="postFormWrap" class="post-compose panel hidden">
           <form id="postForm" class="stack">
             <div class="compose-header">
               <img id="composeAvatar" class="compose-avatar" alt="" src="" />
@@ -267,15 +274,6 @@
           </form>
         </div>
 
-        <div class="feed-tabs" id="feedTabs">
-          <button class="feed-tab active" data-tab="all">🌐 All</button>
-          <button class="feed-tab" data-tab="news">📰 News</button>
-          <button class="feed-tab" data-tab="maliha">🏫 Maliha Hamidou</button>
-          <button class="feed-tab" data-tab="bencerjeb">🏫 Dr. Bencerjeb</button>
-          <button class="feed-tab" data-tab="lotfi">🏫 Colonel Lotfi</button>
-          <button class="feed-tab" data-tab="ibnkhaldoun">🏫 Ibn Khaldoun</button>
-          <button class="feed-tab" data-tab="fatima">🏫 Fatima Boudjlida</button>
-        </div>
         <div id="feedList" class="feed-list"></div>
       </section>
 
@@ -294,7 +292,10 @@
               <div class="convo-search-row">
                 <input id="userSearch" type="search" placeholder="Search users" data-i18n-placeholder="messages.searchUsers" />
               </div>
-              <div id="userSelectList" class="user-select-list"></div>
+              <div class="convo-new-row">
+                <select id="userSelect"></select>
+                <button id="startChatBtn" class="primary small-btn" data-i18n="messages.startButton">Go</button>
+              </div>
             </div>
             <div class="group-create">
               <span class="group-title" data-i18n="messages.groupTitle">Create Group</span>
@@ -313,11 +314,7 @@
                 <div id="convoStatus" class="muted"> </div>
               </div>
             </div>
-            <div class="chat-empty" id="chatEmptyState">
-                  <span class="material-symbols-rounded">chat_bubble</span>
-                  <p>Select a conversation</p>
-                </div>
-                <div id="messageList" class="message-list" style="display:none"></div>
+            <div id="messageList" class="message-list"></div>
             <form id="messageForm" class="message-form hidden">
               <div class="message-input-row">
                 <input type="text" name="text" placeholder="Type a message..." data-i18n-placeholder="messages.inputPlaceholder" />
@@ -511,37 +508,6 @@
 </nav>
 
 <!-- ── MODALS ──────────────────────────── -->
-<div id="userProfileModal" class="modal hidden">
-  <div class="modal-backdrop" data-close="userProfileModal"></div>
-  <div class="modal-card">
-    <button class="modal-close" data-close="userProfileModal">✕</button>
-    <div class="profile-modal-content">
-      <img id="profileModalAvatar" class="profile-modal-avatar" alt="pfp" src="" />
-      <div id="profileModalName" class="profile-modal-name">—</div>
-      <div id="profileModalBio" class="profile-modal-bio muted"></div>
-      <div id="profileModalSchool" class="profile-modal-badge hidden">
-        <span class="material-symbols-rounded">school</span>
-        <span id="profileModalSchoolText">—</span>
-      </div>
-      <div class="profile-modal-stats">
-        <div class="profile-modal-stat">
-          <span id="profileModalPosts" class="n">0</span>
-          <span class="l">Posts</span>
-        </div>
-        <div class="profile-modal-stat">
-          <span id="profileModalFriends" class="n">0</span>
-          <span class="l">Friends</span>
-        </div>
-      </div>
-      <div class="profile-modal-actions">
-        <button id="profileModalMsgBtn" class="primary small-btn">
-          <span class="material-symbols-rounded">chat_bubble</span> Message
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div id="lightbox" class="modal hidden">
   <div class="modal-backdrop" data-close="lightbox"></div>
   <div class="modal-card media-modal">
@@ -570,6 +536,13 @@
 <div id="toast" class="toast"></div>
 
 <script src="i18n.js"></script>
-<script src="app.js"></script>
+<script src="js/state.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/feed.js"></script>
+<script src="js/messages.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/setup.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

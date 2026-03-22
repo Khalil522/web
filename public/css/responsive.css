@@ -1,0 +1,21 @@
+/* MOBILE */
+@media (max-width:767px){
+  .side-nav{display:none}
+  .topbar{display:flex}
+  .app-content{margin-left:0 !important;margin-right:0 !important}
+  .main{padding:14px 12px 90px}
+  .bottom-nav{display:flex}
+  .messages-layout{grid-template-columns:1fr;height:auto}
+  .convo-chat{height:58dvh}
+  .convo-list{max-height:280px}
+  .biggest-news-card{min-height:200px}
+  .biggest-news-card .news-img{height:160px}
+  .card{width:140px}
+  .card img{height:90px}
+}
+
+@media (max-width:420px){
+  .welcome-name{font-size:18px}
+  .feed-action span:last-child{display:none}
+  .modal-card{padding:16px;border-radius:20px}
+}

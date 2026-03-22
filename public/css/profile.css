@@ -1,0 +1,20 @@
+/* PROFILE HERO */
+.profile-hero{position:relative;border-radius:var(--radius);overflow:hidden;margin-bottom:16px;min-height:200px;background:linear-gradient(135deg,rgba(var(--accent-rgb),.08),rgba(167,139,250,.08));border:1px solid rgba(var(--accent-rgb),.15);animation:fadeUp .3s var(--ease)}
+.profile-hero-bg{position:absolute;inset:0;background-size:cover !important;background-position:center !important}
+.profile-hero-content{position:relative;z-index:1;display:flex;gap:18px;align-items:flex-end;padding:24px 20px 20px}
+.profile-avatar-wrap{position:relative;flex-shrink:0}
+.profile-avatar-img{width:80px;height:80px;border-radius:var(--pfp-radius);object-fit:cover;border:3px solid var(--accent);box-shadow:0 0 24px var(--accent-glow);animation:glow 3s ease infinite}
+.profile-avatar-edit{position:absolute;bottom:0;right:0;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s var(--ease)}
+.profile-avatar-edit:hover{transform:scale(1.1)}
+.profile-avatar-edit .material-symbols-rounded{font-size:14px}
+.profile-avatar-edit + input{display:none}
+.profile-hero-info{flex:1;min-width:0}
+.profile-hero-info h2{font-size:20px;font-weight:900;margin-bottom:4px;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.profile-school-tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--accent);margin-top:4px}
+.profile-school-tag .material-symbols-rounded{font-size:14px}
+.profile-stats-row{display:flex;gap:18px;margin-top:10px;flex-wrap:wrap}
+.profile-stat{display:flex;flex-direction:column;align-items:center}
+.stat-num{font-size:18px;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lbl{font-size:11px;color:var(--muted)}
+.profile-panels{display:flex;flex-direction:column;gap:14px}
+.profile-hero.has-bg .profile-hero-content{background:linear-gradient(to top,rgba(0,0,0,.75),transparent)}
